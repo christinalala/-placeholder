@@ -1,0 +1,47 @@
+//解决IE下面placeholder的问题
+$(document).ready(function(){
+    var isIE=document.all ? true : false;
+    
+    if(isIE)
+    {
+        //选取表单内的所有input元素
+        var placeholder = $(":input[placeholder]");
+        //遍历input
+        placeholder.each(function(){
+            if($(this).val() == "" && $(this).attr("type") != "password")
+            {
+                var _v = $(this).attr("placeholder");
+                $(this).val(_v);
+            }
+        });
+        
+        //获取焦点事件
+        placeholder.focus(function(){
+            var _v = $(this).val(),
+                _ph = $(this).attr('placeholder');
+            
+            if(_v == _ph)  $(this).val('');
+        });
+        
+        //失去焦点事件
+        placeholder.blur(function(){
+            var _v = $(this).val();
+                _ph = $(this).attr('placeholder');
+            
+            if(_v == "" && $(this).attr("type") != "password")
+            {
+                $(this).val(_ph);
+            }
+        });
+        
+        //表单提交事件
+        $("form").submit(function(){
+            var _input = $(":input");
+            _input.each(function(){
+                var _v = $(this).val(), _ph = $(this).attr("placeholder");
+                
+                if(_v == _ph)  $(this).val('');
+            });
+        });
+    }
+});
